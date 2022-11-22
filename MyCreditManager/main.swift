@@ -28,40 +28,44 @@ while 1 == 1 {
     } else if selectNumber == "5" {
         selectFive()
     } else {
-        print("입력이 잘못되었습니다. 다시 확인해주세요.")
+        print("뭔가 입력이 잘못되었습니다. 1~5 사이의 숫자 혹은 X를 입력해주세요.")
     }
 }
 
-
 func selectOne() {
     print("추가할 학생의 이름을 알려주세요")
-    let addStudent = readLine()!
-    student.name = addStudent
-
-    let existStudent = classStudent.contains{ $0 == student }
-    if existStudent == true {
-        print("\(addStudent)는 이미 존재하는 학생입니다\n")
+    let addStudent = readLine()
+    if let stu = addStudent, !addStudent!.isEmpty {
+        student.name = addStudent
+        let existStudent = classStudent.contains{ $0 == student }
+        if existStudent == true {
+            print("\(stu)는 이미 존재하는 학생입니다\n")
+        } else {
+            classStudent.append(student)
+            print("\(stu) 학생을 추가했습니다\n")
+        }
     } else {
-        classStudent.append(student)
-        print("\(addStudent) 학생을 추가했습니다\n")
+        print("입력이 잘못되었습니다. 다시 확인해주세요.")
     }
-
 }
 
 func selectTwo() { //예외처리 해야함
     print("삭제할 학생의 이름을 입력해주세요.")
     let deleteStudent = readLine()
-    student.name = deleteStudent
-    if let index = classStudent.firstIndex(where: { $0.name == student.name }) {
-        print("\(deleteStudent) 학생을 삭제 했습니다\n")
-        classStudent.remove(at: index)
+    if let stu = deleteStudent, !deleteStudent!.isEmpty {
+        student.name = stu
+        if let index = classStudent.firstIndex(where: { $0.name == student.name }) {
+            print("\(stu) 학생을 삭제 했습니다\n")
+            classStudent.remove(at: index)
+        } else {
+            print("\(stu) 학생을 찾지 못했습니다\n")
+        }
     } else {
-        print("\(deleteStudent) 학생을 찾지 못했습니다\n")
+        print("입력이 잘못되었습니다. 다시 확인해주세요.")
     }
-    
 }
 
-func selectThree() {
+func selectThree() { //예외사항 고려해야 될게 아무것도 입력 안한거랑 3개 입력 안된거랑, A B 말고 다른 알파벳 입력했을 때
     print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요.")
     let addGrade = Array(readLine()!.components(separatedBy: " "))
     student.name = addGrade[0]
@@ -74,18 +78,18 @@ func selectThree() {
     }
 }
 
-func selectFour() {
+func selectFour() { // 아무것도 입력안했을때, 2개 입력 안했을 때, 성적이 존재하지 않을 때
     print("성적을 삭제할 학생의 이름, 과목 이름을 띄어쓰기로 구분하여 차례로 작성해주세요.")
     let deleteGrade = Array(readLine()!.components(separatedBy: " "))
     student.name = deleteGrade[0]
-    if let index = classStudent.firstIndex(where: { $0.name == student.name }) { //이름이 있는 건 확인했으나 성적이 존재하는지 확인 필요
+    if let index = classStudent.firstIndex(where: { $0.name == student.name }) {
         classStudent[index].classGrade.removeValue(forKey: deleteGrade[1])
     } else {
         print("\(deleteGrade[0]) 학생을 찾지 못했습니다\n")
     }
 }
 
-func selectFive() {
+func selectFive() { //아무것도 입력안했을 때
     print("평점을 알고싶은 학생의 이름을 입력해주세요")
     var meanStudent = readLine()!
     if let index = classStudent.firstIndex(where: { $0.name == meanStudent }) {
