@@ -106,7 +106,7 @@ func selectFour() {
 
 func selectFive() {
     print("평점을 알고싶은 학생의 이름을 입력해주세요")
-    var meanStudent = readLine()
+    let meanStudent = readLine()
     if let stu = meanStudent, !meanStudent!.isEmpty {
         if let index = classStudent.firstIndex(where: { $0.name == stu }) {
             var mean: Float = 0
