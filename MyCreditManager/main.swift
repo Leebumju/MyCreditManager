@@ -7,15 +7,14 @@
 
 import Foundation
 
-print("원하는 기능을 입력해주세요")
-print("1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제 5: 평점보기, X: 종료")
 var classStudent = [Student]()
 var studentCount = 0
 var student: Student = Student()
 
-var selectNumber = readLine()
-
 while 1 == 1 {
+    print("원하는 기능을 입력해주세요")
+    print("1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제 5: 평점보기, X: 종료")
+    var selectNumber = readLine()
     if selectNumber == "X" {
         print("프로그램을 종료합니다...")
     } else if selectNumber == "1" {
@@ -26,11 +25,14 @@ while 1 == 1 {
         selectThree()
     } else if selectNumber == "4" {
         selectFour()
+    } else if selectNumber == "5" {
+        selectFive()
+    } else {
+        print("입력이 잘못되었습니다. 다시 확인해주세요.")
     }
-    print("1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제 5: 평점보기, X: 종료")
-    print(classStudent)
-    selectNumber = readLine()
 }
+
+
 func selectOne() {
     print("추가할 학생의 이름을 알려주세요")
     let addStudent = readLine()!
@@ -83,3 +85,43 @@ func selectFour() {
     }
 }
 
+func selectFive() {
+    print("평점을 알고싶은 학생의 이름을 입력해주세요")
+    var meanStudent = readLine()!
+    if let index = classStudent.firstIndex(where: { $0.name == meanStudent }) {
+        var mean: Float = 0
+        var gradeCount: Float = 0
+        for student in classStudent[index].classGrade {
+            mean += transferGrade(student.value)
+            gradeCount += 1
+            print("\(student.key) : \(student.value)")
+        }
+        print("평점 : \(mean / gradeCount)")
+    } else {
+        print("학생을 찾지 못했습니다\n")
+    }
+}
+
+func transferGrade(_ grade: String) -> Float{
+    if grade == "A+" {
+        return 4.5
+    } else if grade == "A" {
+        return 4
+    } else if grade == "B+" {
+        return 3.5
+    } else if grade == "B" {
+        return 3
+    } else if grade == "C+" {
+        return 2.5
+    } else if grade == "C" {
+        return 2
+    } else if grade == "D+" {
+        return 1.5
+    } else if grade == "D" {
+        return 1
+    } else if grade == "F" {
+        return 0
+    } else {
+        return -1
+    }
+}
